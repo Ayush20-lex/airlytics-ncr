@@ -238,11 +238,22 @@ function ThemedToaster() {
 }
 
 export default function App() {
+  // Dark by default, and not the OS's dark - ours.
+  //
+  // `enableSystem` is off rather than left on with a dark default: with it on,
+  // a visitor whose machine is set to light gets a light site on first load,
+  // which is the opposite of the intent. Off, the OS is never consulted and
+  // `defaultTheme` decides.
+  //
+  // It only decides for a reader who has not chosen. next-themes writes an
+  // explicit choice to localStorage, and the toggle and the command palette
+  // both set 'light' or 'dark' literally - never 'system' - so a switch to
+  // light stays switched on the next visit.
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem={true}
+      defaultTheme="dark"
+      enableSystem={false}
       disableTransitionOnChange
     >
       {/* reducedMotion="user" makes every framer animation honour the OS setting */}

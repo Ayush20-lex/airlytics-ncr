@@ -49,6 +49,25 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Clears a theme choice this build can no longer honour.
+    
+         The site followed the OS until dark became the default, and anyone who
+         loaded it before that is carrying theme="system" in localStorage.
+         next-themes writes whatever it finds there straight onto <html>, so
+         with enableSystem off that stored value became class="system" - a
+         class no stylesheet matches, which renders as light because light is
+         the default ramp. A returning reader would have got the one state
+         nobody chose.
+    
+         Removing the key lets defaultTheme decide, which is dark. Inline and
+         ahead of the bundle so it runs before next-themes reads storage;
+         wrapped because storage throws in a private window rather than
+         returning null, and a theme is not worth a blank page. -->
+    <script>
+      try {
+        if (localStorage.getItem('theme') === 'system') localStorage.removeItem('theme');
+      } catch (e) {}
+    </script>
   </head>
   <body class="min-h-dvh bg-base font-sans text-ink">
     <div id="root"></div>
